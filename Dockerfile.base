@@ -1,0 +1,6 @@
+FROM python:3.7.9-buster
+RUN pip install requests Interface
+COPY ./workspace /workspace/
+WORKDIR /workspace
+USER root
+HEALTHCHECK NONE
