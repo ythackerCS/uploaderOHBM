@@ -2,41 +2,31 @@
 
 ## Introduction
 
-> This container runs the neurodot preprocesisng pipleline via papermill, by mounting the subject data from the scan resources folder and then exports and saves every figure into an output folder called savedFigures, and the output notebook (a fully run version of the notebook) is saved under outputNotebook filder. 
+> This container creates projects for users, verfies them and enables them on xnat and uploads data for their projects. This is a NONXNAT container and was used for a conference (OHBM 2022) 
 
 ##  Design: 
   * Used python 
   * full list of packages needed: (listed within the Dockerfile.base)
-    * deepdiff
-    * matplotlib 
-    * normalize_easy 
-    * numpy 
-    * scipy 
-    * pyvista
-    * sympy
-    * papermill  
+    * requests
+    * pyxnat 
+  * Uses docker base: python:3.7.9-buster
     
    
 ##  How to use:
-  > All the scripts are located within the "workspace/neuro_dot" dir - any edits you will need to make for your specific use case will be with "NeuroDOT_PreProcessing_Script_dynamicFilterMode.ipynb". Once edits are done run ./build.sh to build your docker container. Specifics to edit within docker are the Dockerfile.base file for naming the container, pushing to git and libraries used. If you want integration with XNAT navigate to the "xnat" folder and edit the command.json documentation available at @ https://wiki.xnat.org/container-service/making-your-docker-image-xnat-ready-122978887.html#MakingyourDockerImage%22XNATReady%22-installing-a-command-from-an-xnat-ready-image
+  > All the scripts are located within the "workspace/" dir - any edits you will need to make for your specific use case will be with "upload.py". Once edits are done run ./build.sh to build your docker container. Specifics to edit within docker are the Dockerfile.base file for naming the container, pushing to git and libraries used. 
 
-  * NOTE this was designed to be generalized to the mat type data. If you would like to just use the notebook or just the library it is recommend you visit: https://github.com/ythackerCS/NURO_DOT_py_dev which has the library files, and the same files for you to get started with creating your own pipleines.  
+  #command to run the script 
 
-## Running (ON XNAT): 
-  * Navigate to a Subject
-  * Click on Run Containers and then click "Run presprocessing pipleine with subject data mounted" 
-  * Select the folder with the data in it and hit run 
+  > docker run -ti -v  $PWD:/workspace -w /workspace registry.nrg.wustl.edu/docker/nrg-repo/yash/uploaderohbm python upload.py
+  > structure of run command:
+  > {docker run}    {-v volumemount:what its address will be on the inside} {-w sets workspace directory} {name of docker container} {python scriptname.py}
 
-## Running in general: 
-  * NeuroDOT_PreProcessing_Script_dynamicFilterMode.ipynb will read the RTStruct create a copy and then search through it for given filters, then scale the given ROI(s)
-  * There are arguments needed to run this pipline which can be found within the scale.py script 
-  * There is an upload componenet unique to XNAT if you just want to run it without uploading you can comment out that component. 
+  * NOTE this is NOT a container designed for XNAT use, it was a conference specific container made for project creation for a workshop at OHBM 2022
+  * If you want GPU access that will be different please look at the documentation on the website 
 
-## NOTES: 
-  * This was a test method container to see how well papermill works and to try a different form of running scripts typically you would convert your work to a .py file 
-  * Parts of the scripts within workspace were written with project specificity in mind so please keep that in mind as you use this code 
-  * It is recommended that you have some experience working with docker and specficially building containers for xnat for this to work for your use cases 
-  * If you just want to use the code for your own work without docker stuff just navigate the original Neurodot library @ https://github.com/ythackerCS/NURO_DOT_py_dev which has the library files, and the same files for you to get started with creating your own pipleines.  
+## NOTES:  
+  * The scripts workspace were written with conferense and setting specificity in mind so please keep that in mind as you use this code 
+  * It is recommended that you have some experience working with docker and specficially building containers 
   
 ## Future: 
   

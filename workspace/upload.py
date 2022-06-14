@@ -75,7 +75,7 @@ with requests.session() as s:
             my_project = interface.select.project(project_name)
 
             # #creating subjects loop
-            if not my_project.exists() or len(my_project.subjects().get()) < 12:
+            if not my_project.exists() or len(my_project.subjects().get()) < 11:
                 print("Project did not exist/ was incomplete, creating project ", project_name)
                 my_project.create()
 
