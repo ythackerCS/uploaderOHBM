@@ -11,12 +11,12 @@ from pyxnat import Interface
 #                     "adameggebrecht", "kelseym_owner", "ari"]
 
 
-project_id = "NEURODOT_FNIRS_DEMO_"
+project_id = "NEURODOT_FNIRS_DEMO_TEST1_"
 login = "username"
 pas = "password"
 xnat_url = "https://demo.xnat.org"
 xnat_url_users = xnat_url + "/xapi/users"
-users_to_exclude = ["admin", "guest", "kelseym", "stlstevemoore","satrajit", "emma", "emma_test", "adameggebrecht", "kelseym_owner", "ari", "smoore", "ythacker", 'emma2', 'arisegel_is_cool']
+users_to_exclude = ["admin", "guest", "kelseym", "stlstevemoore","satrajit", "smoore", "andrewl",  "emmaspeh"]
 
 new_users_projects_created = []
 
@@ -93,7 +93,7 @@ with requests.session() as s:
 
                 #A_MAT UPLOADING
                 print("Uploading A_MAT folder ")
-                resouce = my_project.resource("A_matricies")
+                resource = my_project.resource("A_matricies")
                 if not resource.exists():
                         resource.create()
                 file_list = [name for name in os.listdir(a_mat_file_path)]
@@ -108,7 +108,7 @@ with requests.session() as s:
 
                 #E_MAT UPLOADING
                 print("Uploading E_MAT folder ")
-                resouce = my_project.resource("E_matricies")
+                resource = my_project.resource("E_matricies")
                 if not resource.exists():
                         resource.create()
                 file_list = [name for name in os.listdir(e_mat_file_path)]
@@ -123,7 +123,7 @@ with requests.session() as s:
 
                 #mni_MAT UPLOADING
                 print("Uploading MNI_MAT folder ")
-                resouce = my_project.resource("MNI_files")
+                resource = my_project.resource("MNI_files")
                 if not resource.exists():
                         resource.create()
                 file_list = [name for name in os.listdir(mni_mat_file_path)]
