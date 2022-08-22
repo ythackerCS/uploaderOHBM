@@ -11,7 +11,7 @@ from pyxnat import Interface
 #                     "adameggebrecht", "kelseym_owner", "ari"]
 
 
-project_id = "NEURODOT_Preprocessing_"
+project_id = "NEURODOT_FNIRS_DEMO_"
 login = "username"
 pas = "password"
 xnat_url = "https://demo.xnat.org"
@@ -22,6 +22,9 @@ new_users_projects_created = []
 
 
 data_file_path = "./Data/"
+a_mat_file_path = "./A_matricies"
+e_mat_file_path = "./E_matricies"
+mni_mat_file_path = "./MNI_files"
 params_file_path = "params.txt"
 params_file_path2 = "params2.txt"
 
@@ -85,10 +88,56 @@ with requests.session() as s:
                 print("Added ", user, " to project ", project_name, "\n", r)
 
 
+                #project level files to upload 
+                print("Uploading project level files: ")
+
+                #A_MAT UPLOADING
+                print("Uploading A_MAT folder ")
+                resouce = my_project.resource("A_matricies")
+                if not resource.exists():
+                        resource.create()
+                file_list = [name for name in os.listdir(a_mat_file_path)]
+                for file in file_list:
+                    #upload resource file
+                    local_resource = (os.path.join(a_mat_file_path, file))
+                    fileName = file
+
+                    # print("Uploading subject resource... ", local_resource)
+                    resource.file(fileName).insert(local_resource)
+
+
+                #E_MAT UPLOADING
+                print("Uploading E_MAT folder ")
+                resouce = my_project.resource("E_matricies")
+                if not resource.exists():
+                        resource.create()
+                file_list = [name for name in os.listdir(e_mat_file_path)]
+                for file in file_list:
+                    #upload resource file
+                    local_resource = (os.path.join(e_mat_file_path, file))
+                    fileName = file
+
+                    # print("Uploading subject resource... ", local_resource)
+                    resource.file(fileName).insert(local_resource)
+
+
+                #mni_MAT UPLOADING
+                print("Uploading MNI_MAT folder ")
+                resouce = my_project.resource("MNI_files")
+                if not resource.exists():
+                        resource.create()
+                file_list = [name for name in os.listdir(mni_mat_file_path)]
+                for file in file_list:
+                    #upload resource file
+                    local_resource = (os.path.join(mni_mat_file_path, file))
+                    fileName = file
+
+                    # print("Uploading subject resource... ", local_resource)
+                    resource.file(fileName).insert(local_resource)
+
+
                 file_list = [name for name in os.listdir(data_file_path)]
-
                 num_subjects = len(file_list)
-
                 print("Creating and uploading data for {subjects} subjects".format(subjects=num_subjects+1))
                 
                 i = 1
@@ -100,7 +149,7 @@ with requests.session() as s:
 
                     #subject name with file type
                     type = file.split('_')[-2]
-                    subject_name = "subject_"+str(i)+"_"+type
+                    subject_name = "participant_"+str(i)+"_"+type
                     # print(subject_name)
 
                     print("Creating subject... ", subject_name)
@@ -115,9 +164,10 @@ with requests.session() as s:
 
                     #upload resource file
                     local_resource = (os.path.join(data_file_path, file))
+                    fileName = "participant_"+type+".mat"
 
                     # print("Uploading subject resource... ", local_resource)
-                    resource.file('subjectdata.mat').insert(local_resource)
+                    resource.file(fileName).insert(local_resource)
                     resource.file('params.txt').insert(params_file_path)
 
                     i = i+1
